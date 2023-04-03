@@ -1,11 +1,15 @@
 using CQRS_CDP_.CQRS_DP.Handlers.CommandsHandlers.CandidateCH;
 using CQRS_CDP_.CQRS_DP.Handlers.CommandsHandlers.CertificateCH;
+using CQRS_CDP_.CQRS_DP.Handlers.CommandsHandlers.ExamCH;
 using CQRS_CDP_.CQRS_DP.Handlers.QueriesHandlers.CandidateQR;
 using CQRS_CDP_.CQRS_DP.Handlers.QueriesHandlers.CertificateQH;
+using CQRS_CDP_.CQRS_DP.Handlers.QueriesHandlers.ExamQH;
 using CQRS_CDP_.CQRS_DP.Requests.CommandsRequests.CandidateCR;
 using CQRS_CDP_.CQRS_DP.Requests.CommandsRequests.CertificateCR;
+using CQRS_CDP_.CQRS_DP.Requests.CommandsRequests.ExamCR;
 using CQRS_CDP_.CQRS_DP.Requests.QueriesRequests.CandidateQR;
 using CQRS_CDP_.CQRS_DP.Requests.QueriesRequests.CertificateQR;
+using CQRS_CDP_.CQRS_DP.Requests.QueriesRequests.ExamQR;
 using CQRS_CDP_.Data;
 using CQRS_CDP_.Models;
 using MediatR;
@@ -43,6 +47,11 @@ namespace CQRS_CDP_
             builder.Services.AddScoped<IRequestHandler<CreateCertificateCommand, int>, CreateCertificateCommandHandler>();
             builder.Services.AddScoped<IRequestHandler<UpdateCertificateCommand, int>, UpdateCertificateCommandHandler>();
             builder.Services.AddScoped<IRequestHandler<DeleteCertificateCommand, int>, DeleteCertificateCommandHandler>();
+            
+            builder.Services.AddScoped<IRequestHandler<GetExamByIdQuery,Exam>, GetExamByIdQueryHandler>();
+            builder.Services.AddScoped<IRequestHandler<CreateExamCommand, int>, CreateExamCommandHandler>();
+            builder.Services.AddScoped<IRequestHandler<UpdateExamCommand, int>, UpdateExamCommandHandler>();
+            builder.Services.AddScoped<IRequestHandler<CreateExamCommand, int>, CreateExamCommandHandler>();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();

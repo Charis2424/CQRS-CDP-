@@ -7,6 +7,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using CQRS_CDP_.Data;
 using CQRS_CDP_.Models;
+using CQRS_CDP_.CQRS_DP.Requests.CommandsRequests.CertificateCR;
+using CQRS_CDP_.CQRS_DP.Requests.QueriesRequests.CertificateQR;
+using MediatR;
+using CQRS_CDP_.CQRS_DP.Requests.CommandsRequests.ExamCR;
+using CQRS_CDP_.CQRS_DP.Requests.QueriesRequests.ExamQR;
 
 namespace CQRS_CDP_.Controllers
 {
@@ -14,111 +19,48 @@ namespace CQRS_CDP_.Controllers
     [ApiController]
     public class ExamsController : ControllerBase
     {
-        private readonly AppDBContext _context;
+        private readonly IMediator _mediator;
 
-        public ExamsController(AppDBContext context)
+        public ExamsController(IMediator mediator)
         {
-            _context = context;
+            _mediator = mediator;
         }
 
-        // GET: api/Exams
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Exam>>> GetExams()
+        [HttpPost]
+        public async Task<IActionResult> CreateExam([FromBody] CreateExamCommand command)
         {
-          if (_context.Exams == null)
-          {
-              return NotFound();
-          }
-            return await _context.Exams.ToListAsync();
+            var examId = await _mediator.Send(command);
+            return Ok(new { ExamId = examId });
         }
 
-        // GET: api/Exams/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Exam>> GetExam(int id)
+        public async Task<IActionResult> GetExamById(int id)
         {
-          if (_context.Exams == null)
-          {
-              return NotFound();
-          }
-            var exam = await _context.Exams.FindAsync(id);
-
+            var query = new GetExamByIdQuery { Id = id };
+            var exam = await _mediator.Send(query);
             if (exam == null)
             {
                 return NotFound();
             }
-
-            return exam;
+            return Ok(exam);
         }
 
-        // PUT: api/Exams/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutExam(int id, Exam exam)
+        public async Task<IActionResult> UpdateExam(int id, UpdateExamCommand command)
         {
-            if (id != exam.Id)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(exam).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!ExamExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            command.Id = id;
+            await _mediator.Send(command);
 
             return NoContent();
         }
 
-        // POST: api/Exams
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
-        public async Task<ActionResult<Exam>> PostExam(Exam exam)
-        {
-          if (_context.Exams == null)
-          {
-              return Problem("Entity set 'AppDBContext.Exams'  is null.");
-          }
-            _context.Exams.Add(exam);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetExam", new { id = exam.Id }, exam);
-        }
-
-        // DELETE: api/Exams/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteExam(int id)
         {
-            if (_context.Exams == null)
-            {
-                return NotFound();
-            }
-            var exam = await _context.Exams.FindAsync(id);
-            if (exam == null)
-            {
-                return NotFound();
-            }
-
-            _context.Exams.Remove(exam);
-            await _context.SaveChangesAsync();
+            var command = new DeleteExamCommand(id);
+            await _mediator.Send(command);
 
             return NoContent();
-        }
-
-        private bool ExamExists(int id)
-        {
-            return (_context.Exams?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }
