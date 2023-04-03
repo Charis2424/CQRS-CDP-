@@ -43,6 +43,24 @@ namespace CQRS_CDP_.Controllers
             return Ok(candidate);
         }
 
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateCandidate(int id, UpdateCandidateCommand command)
+        {
+            command.Id = id;
+            await _mediator.Send(command);
+
+            return NoContent();
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteCandidate(int id)
+        {
+            var command = new DeleteCandidateCommand(id);
+            await _mediator.Send(command);
+
+            return NoContent();
+        }
+
         //[HttpPost("{candidateId}/certificates")]
         //public async Task<IActionResult> AddCertificateToCandidate(int candidateId, [FromBody] AddCertificateToCandidateCommand command)
         //{

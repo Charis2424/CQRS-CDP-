@@ -30,9 +30,10 @@ namespace CQRS_CDP_
             builder.Services.AddControllers();
             //builder.Services.AddMediatR(Assembly.GetExecutingAssembly());
             builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<Program>());
-
             builder.Services.AddScoped<IRequestHandler<GetCandidateByIdQuery, Candidate>, GetCandidateByIdQueryHandler>();
             builder.Services.AddScoped<IRequestHandler<CreateCandidateCommand, int>, CreateCandidateCommandHandler>();
+            builder.Services.AddScoped<IRequestHandler<UpdateCandidateCommand, int>, UpdateCandidateCommandHandler>();
+            builder.Services.AddScoped<IRequestHandler<DeleteCandidateCommand, int>, DeleteCandidateCommandHandler>();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
