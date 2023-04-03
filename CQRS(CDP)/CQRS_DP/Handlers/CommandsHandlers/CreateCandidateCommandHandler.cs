@@ -5,11 +5,11 @@ using MediatR;
 
 namespace CQRS_CDP_.CQRS_DP.Handlers.CommandsHandlers
 {
-    public class CreateCandidateQueryHandler : IRequestHandler<CreateCandidateCommand, int>
+    public class CreateCandidateCommandHandler : IRequestHandler<CreateCandidateCommand, int>
     {
         private readonly AppDBContext _context;
 
-        public CreateCandidateQueryHandler(AppDBContext context)
+        public CreateCandidateCommandHandler(AppDBContext context)
         {
             _context = context;
         }
