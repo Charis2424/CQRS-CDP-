@@ -1,10 +1,10 @@
-﻿using CQRS_CDP_.CQRS_DP.Requests.QueriesRequests;
+﻿using CQRS_CDP_.CQRS_DP.Requests.QueriesRequests.CandidateQR;
 using CQRS_CDP_.Data;
 using CQRS_CDP_.Models;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace CQRS_CDP_.CQRS_DP.Handlers.QueriesHandlers
+namespace CQRS_CDP_.CQRS_DP.Handlers.QueriesHandlers.CandidateQR
 {
     public class GetCandidateByIdQueryHandler : IRequestHandler<GetCandidateByIdQuery, Candidate>
     {

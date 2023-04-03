@@ -1,7 +1,7 @@
 ﻿using CQRS_CDP_.Models;
 using MediatR;
 
-namespace CQRS_CDP_.CQRS_DP.Requests.QueriesRequests
+namespace CQRS_CDP_.CQRS_DP.Requests.QueriesRequests.CandidateQR
 {
     public class GetCandidateByIdQuery : IRequest<Candidate>
     {

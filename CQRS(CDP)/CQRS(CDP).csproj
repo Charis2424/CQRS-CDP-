@@ -19,4 +19,11 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="CQRS_DP\Handlers\CommandsHandlers\ExamCH\" />
+    <Folder Include="CQRS_DP\Handlers\QueriesHandlers\ExamQH\" />
+    <Folder Include="CQRS_DP\Requests\CommandsRequests\ExamCR\" />
+    <Folder Include="CQRS_DP\Requests\QueriesRequests\ExamQR\" />
+  </ItemGroup>
+
 </Project>

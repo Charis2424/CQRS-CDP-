@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+﻿
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using CQRS_CDP_.Data;
-using CQRS_CDP_.Models;
+using MediatR;
+using CQRS_CDP_.CQRS_DP.Requests.CommandsRequests.CertificateCR;
+using CQRS_CDP_.CQRS_DP.Requests.QueriesRequests.CertificateQR;
 
 namespace CQRS_CDP_.Controllers
 {
@@ -14,111 +10,49 @@ namespace CQRS_CDP_.Controllers
     [ApiController]
     public class CertificatesController : ControllerBase
     {
-        private readonly AppDBContext _context;
+        private readonly IMediator _mediator;
 
-        public CertificatesController(AppDBContext context)
+        public CertificatesController(IMediator mediator)
         {
-            _context = context;
+            _mediator = mediator;
         }
 
-        // GET: api/Certificates
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Certificate>>> GetCertificates()
+        [HttpPost]
+        public async Task<IActionResult> CreateCertificate([FromBody] CreateCertificateCommand command)
         {
-          if (_context.Certificates == null)
-          {
-              return NotFound();
-          }
-            return await _context.Certificates.ToListAsync();
+            var certificateId = await _mediator.Send(command);
+            return Ok(new { CertificateId = certificateId });
         }
 
-        // GET: api/Certificates/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Certificate>> GetCertificate(int id)
+        public async Task<IActionResult> GetCertificateById(int id)
         {
-          if (_context.Certificates == null)
-          {
-              return NotFound();
-          }
-            var certificate = await _context.Certificates.FindAsync(id);
-
+            var query = new GetCertificateByIdQuery { Id = id };
+            var certificate = await _mediator.Send(query);
             if (certificate == null)
             {
                 return NotFound();
             }
-
-            return certificate;
+            return Ok(certificate);
         }
 
-        // PUT: api/Certificates/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutCertificate(int id, Certificate certificate)
+        public async Task<IActionResult> UpdateCertificate(int id, UpdateCertificateCommand command)
         {
-            if (id != certificate.Id)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(certificate).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!CertificateExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            command.Id = id;
+            await _mediator.Send(command);
 
             return NoContent();
         }
 
-        // POST: api/Certificates
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
-        public async Task<ActionResult<Certificate>> PostCertificate(Certificate certificate)
-        {
-          if (_context.Certificates == null)
-          {
-              return Problem("Entity set 'AppDBContext.Certificates'  is null.");
-          }
-            _context.Certificates.Add(certificate);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetCertificate", new { id = certificate.Id }, certificate);
-        }
-
-        // DELETE: api/Certificates/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCertificate(int id)
         {
-            if (_context.Certificates == null)
-            {
-                return NotFound();
-            }
-            var certificate = await _context.Certificates.FindAsync(id);
-            if (certificate == null)
-            {
-                return NotFound();
-            }
-
-            _context.Certificates.Remove(certificate);
-            await _context.SaveChangesAsync();
+            var command = new DeleteCertificateCommand(id);
+            await _mediator.Send(command);
 
             return NoContent();
         }
 
-        private bool CertificateExists(int id)
-        {
-            return (_context.Certificates?.Any(e => e.Id == id)).GetValueOrDefault();
-        }
     }
 }

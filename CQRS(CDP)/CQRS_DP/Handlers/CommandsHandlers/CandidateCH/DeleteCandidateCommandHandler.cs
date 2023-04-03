@@ -1,11 +1,11 @@
-﻿using CQRS_CDP_.CQRS_DP.Requests.CommandsRequests;
+﻿using CQRS_CDP_.CQRS_DP.Requests.CommandsRequests.CandidateCR;
 using CQRS_CDP_.Data;
 using CQRS_CDP_.Models;
 using MediatR;
 
-namespace CQRS_CDP_.CQRS_DP.Handlers.CommandsHandlers
+namespace CQRS_CDP_.CQRS_DP.Handlers.CommandsHandlers.CandidateCH
 {
-    public class DeleteCandidateCommandHandler : IRequestHandler<DeleteCandidateCommand,int>
+    public class DeleteCandidateCommandHandler : IRequestHandler<DeleteCandidateCommand, int>
     {
         private readonly AppDBContext _context;
 

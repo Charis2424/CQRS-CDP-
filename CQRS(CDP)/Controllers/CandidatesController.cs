@@ -7,9 +7,10 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using CQRS_CDP_.Data;
 using CQRS_CDP_.Models;
-using CQRS_CDP_.CQRS_DP.Requests.CommandsRequests;
 using CQRS_CDP_.CQRS_DP.Requests.QueriesRequests;
 using MediatR;
+using CQRS_CDP_.CQRS_DP.Requests.CommandsRequests.CandidateCR;
+using CQRS_CDP_.CQRS_DP.Requests.QueriesRequests.CandidateQR;
 
 namespace CQRS_CDP_.Controllers
 {

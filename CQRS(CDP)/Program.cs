@@ -1,7 +1,11 @@
-using CQRS_CDP_.CQRS_DP.Handlers.CommandsHandlers;
-using CQRS_CDP_.CQRS_DP.Handlers.QueriesHandlers;
-using CQRS_CDP_.CQRS_DP.Requests.CommandsRequests;
-using CQRS_CDP_.CQRS_DP.Requests.QueriesRequests;
+using CQRS_CDP_.CQRS_DP.Handlers.CommandsHandlers.CandidateCH;
+using CQRS_CDP_.CQRS_DP.Handlers.CommandsHandlers.CertificateCH;
+using CQRS_CDP_.CQRS_DP.Handlers.QueriesHandlers.CandidateQR;
+using CQRS_CDP_.CQRS_DP.Handlers.QueriesHandlers.CertificateQH;
+using CQRS_CDP_.CQRS_DP.Requests.CommandsRequests.CandidateCR;
+using CQRS_CDP_.CQRS_DP.Requests.CommandsRequests.CertificateCR;
+using CQRS_CDP_.CQRS_DP.Requests.QueriesRequests.CandidateQR;
+using CQRS_CDP_.CQRS_DP.Requests.QueriesRequests.CertificateQR;
 using CQRS_CDP_.Data;
 using CQRS_CDP_.Models;
 using MediatR;
@@ -33,7 +37,12 @@ namespace CQRS_CDP_
             builder.Services.AddScoped<IRequestHandler<GetCandidateByIdQuery, Candidate>, GetCandidateByIdQueryHandler>();
             builder.Services.AddScoped<IRequestHandler<CreateCandidateCommand, int>, CreateCandidateCommandHandler>();
             builder.Services.AddScoped<IRequestHandler<UpdateCandidateCommand, int>, UpdateCandidateCommandHandler>();
-            builder.Services.AddScoped<IRequestHandler<DeleteCandidateCommand, int>, DeleteCandidateCommandHandler>();
+            builder.Services.AddScoped<IRequestHandler<DeleteCandidateCommand, int>, DeleteCandidateCommandHandler>();            
+            
+            builder.Services.AddScoped<IRequestHandler<GetCertificateByIdQuery, Certificate>, GetCertificateByIdQueryHandler>();
+            builder.Services.AddScoped<IRequestHandler<CreateCertificateCommand, int>, CreateCertificateCommandHandler>();
+            builder.Services.AddScoped<IRequestHandler<UpdateCertificateCommand, int>, UpdateCertificateCommandHandler>();
+            builder.Services.AddScoped<IRequestHandler<DeleteCertificateCommand, int>, DeleteCertificateCommandHandler>();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
